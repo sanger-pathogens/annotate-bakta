@@ -34,12 +34,6 @@ process BAKTA {
         --prefix ${meta.ID} \\
         --locus-tag ${meta.ID} \\
         --db ${params.bakta_db} \\
-        --keep-contig-headers \\
-        --skip-trna \\
-        --skip-tmrna \\
-        --skip-rrna \\
-        --skip-ncrna \\
-        --skip-ncrna-region \\
-        --skip-crispr
+        --keep-contig-headers
     """
 }
