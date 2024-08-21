@@ -13,10 +13,10 @@ workflow MANIFEST_PARSE {
         .splitCsv ( header:true, sep:',' )
         .map { create_assembly_channels(it) }
         .map { meta, assembly_path -> [ meta, assembly ] }
-        .set { assemblys }
+        .set { assemblies }
 
     emit:
-    assemblys
+    assemblies
 }
 
 // Function to get list of [ meta, assembly ]
