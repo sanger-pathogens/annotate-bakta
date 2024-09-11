@@ -15,7 +15,7 @@ NextflowTool.commandLineParams(workflow.commandLine, log, params.monochrome_logs
 
 def printHelp() {
     NextflowTool.help_message("${workflow.ProjectDir}/schema.json", 
-                               [],
+                               ["${workflow.ProjectDir}/assorted-sub-workflows/annotate_bakta/schema.json"],
     params.monochrome_logs, log)
 }
 
@@ -30,7 +30,7 @@ def printHelp() {
 //
 
 include { MANIFEST_PARSE   } from './subworkflows/manifest_parse.nf'
-include { ANNOTATE_BAKTA   } from './subworkflows/annotate_bakta.nf'
+include { ANNOTATE_BAKTA   } from './assorted-sub-workflows/annotate_bakta/subworkflows/annotate_bakta.nf'
 
 
 

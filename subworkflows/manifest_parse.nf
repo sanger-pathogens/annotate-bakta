@@ -12,11 +12,19 @@ workflow MANIFEST_PARSE {
         .ifEmpty {exit 1, "Cannot find path file ${samplesheet}"}
         .splitCsv ( header:true, sep:',' )
         .map { create_assembly_channels(it) }
-        .map { meta, assembly_path -> [ meta, assembly ] }
         .set { assemblies }
 
+    if (params.combine_annotations) {
+        Channel
+            .fromPath( samplesheet )
+            .ifEmpty {exit 1, "Cannot find path file ${samplesheet}"}
+            .splitCsv ( header:true, sep:',' )
+            .map { create_annotations_channels(it) }
+            .set { pre_generated_annotation_channel }
+    }
     emit:
     assemblies
+    // pre_generated_annotation_channel for future
 }
 
 // Function to get list of [ meta, assembly ]
@@ -36,5 +44,22 @@ def create_assembly_channels(LinkedHashMap row) {
     }
 
     array = [ meta, assembly ]
+    return array
+}
+
+// Function to get list of [ meta, assembly ]
+def create_annotations_channels(LinkedHashMap row) {
+    def meta = [:]
+
+    //for bakta
+    meta.ID = row.ID.replace('#', '_')
+
+    def array = []
+    // check short reads
+    if ( row.annotations ) {
+        annotations = file(row.annotations)
+    }
+
+    array = [ meta, annotations ]
     return array
 }
