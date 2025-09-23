@@ -36,7 +36,7 @@ def validate_choice_param(param_option, param, choices, mandatory=true) {
             log.error("Please specify a valid value for the ${param_option} option. Possibilities are ${choices}.")
             return 1
         }
-    } else if (madatory) {
+    } else if (mandatory) {
         log.error("Please specify a value for the mandatory ${param_option} option.")
         return 1
     }
@@ -49,7 +49,7 @@ def validate_number_param(param_option, param, mandatory=true) {
             log.error("The value specified for the ${param_option} option must be a valid number")
             return 1
         }
-    } else if (madatory) {
+    } else if (mandatory) {
         log.error("Please specify a valid value for the ${param_option} option.")
         return 1
     }
@@ -60,7 +60,7 @@ def validate_parameters() {
     int errors = 0
     println "start parameter validation"
     errors += validate_path_param("--manifest", params.manifest)
-    errors += validate_choice_param("--combine_annotations", params.combine_annotations, ["true","false"], false)
+    errors += validate_choice_param("--combine_annotations", params.combine_annotations, [true,false], false)
 
     if (errors > 0) {
         log.error(String.format("%d errors detected", errors))
