@@ -32,7 +32,7 @@ def printHelp() {
 
 include { MANIFEST_PARSE   } from './subworkflows/manifest_parse.nf'
 include { ANNOTATE_BAKTA   } from './assorted-sub-workflows/annotate_bakta/subworkflows/annotate_bakta.nf'
-
+include { validate_parameters } from './modules/validate.nf'
 
 
 /*
@@ -46,6 +46,8 @@ workflow {
         printHelp()
         exit 0
     }
+
+    validate_parameters()
 
     manifest = file(params.manifest)
 
