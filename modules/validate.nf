@@ -31,7 +31,7 @@ def validate_path_param(
     }
 
 def validate_choice_param(param_option, param, choices, mandatory=true) {
-    if (param) {
+    if (param != null) /* Explicit comparison with null, because false is an acceptable value */ {
         if (!choices.contains(param)) {
             log.error("Please specify a valid value for the ${param_option} option. Possibilities are ${choices}.")
             return 1
