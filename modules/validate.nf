@@ -30,24 +30,27 @@ def validate_path_param(
         return 0
     }
 
-def validate_choice_param(param_option, param, choices) {
-    param_name = (param_option - "--").replaceAll("_", " ")
-    if (!choices.contains(param)) {
-        log.error("Please specify the ${param_name} using the ${param_option} option. Possibilities are ${choices}.")
+def validate_choice_param(param_option, param, choices, mandatory=true) {
+    if (!param) {
+        if (!choices.contains(param)) {
+            log.error("Please specify a valid value for the ${param_option} option. Possibilities are ${choices}.")
+            return 1
+        }
+    } else if (madatory) {
+        log.error("Please specify a value for the mandatory ${param_option} option.")
         return 1
     }
     return 0
 }
 
-def validate_number_param(param_option, param) {
-    param_name = (param_option - "--").replaceAll("_", " ")
+def validate_number_param(param_option, param, mandatory=true) {
     if (param != null) /* Explicit comparison with null, because 0 is an acceptable value */ {
         if (!(param instanceof Number)) {
-            log.error("The ${param_name} specified with the ${param_option} option must be a valid number")
+            log.error("The value specified for the ${param_option} option must be a valid number")
             return 1
         }
-    } else {
-        log.error("Please specify the ${param_name} using the ${param_option} option")
+    } else if (madatory) {
+        log.error("Please specify a valid value for the ${param_option} option.")
         return 1
     }
     return 0
@@ -57,7 +60,7 @@ def validate_parameters() {
     int errors = 0
     println "start parameter validation"
     errors += validate_path_param("--manifest", params.manifest)
-    errors += validate_choice_param("--combine_annotations", params.combine_annotations, ["true","false"])
+    errors += validate_choice_param("--combine_annotations", params.combine_annotations, ["true","false"], false)
 
     if (errors > 0) {
         log.error(String.format("%d errors detected", errors))
