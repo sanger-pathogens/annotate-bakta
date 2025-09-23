@@ -8,8 +8,7 @@
 
 ## Introduction
 
-**annotate_bakta** is an convenience wrapper around the community standard bacterial genome annotation software Bakta [generate_mags](https://github.com/oschwengers/bakta).  
-It allows running this software on large batches of genomes taking advantage of the convenient automation of a Nextflow pipeline to process all genomes in parallel
+**annotate-bakta** is a convenience wrapper around the community standard bacterial genome annotation software [Bakta](https://github.com/oschwengers/bakta). It allows running this software on large batches of genomes taking advantage of the convenient automation of a Nextflow pipeline to process all genomes in parallel.
 In addition this pipeline allows to combine previously generated annotation in GFF3 format with the Bakta anotation generated in this pipeline.
 
 In the future, this pipeline may be further developed to include other annotation modules, which will all be combined into a final annotation file. please contact [pam-informatics@sanger.ac.uk](mailto:pam-informatics@sanger.ac.uk) if you're interested in such features.
