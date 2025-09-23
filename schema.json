@@ -2,14 +2,14 @@
   "pipeline": "Base schema",
   "params": {
     "Annotation pipeline options": {
-     "manifest": {
+      "manifest": {
         "default": "",
         "help_text": "Manifest containing paths to fasta genomic DNA sequence files with header containing at least the columns: `ID,assembly`. (mandatory)"
-     },
-     "combine_annotations": {
+      },
+      "combine_annotations": {
         "default": "false",
         "help_text": "Previously generated annotation in GFF3 format are to be combined with the Bakta anotation generated in this pipeline. These annotation files should be provided in the input manifest by adding a column with header `annotations`."
-     }
+      }
     },
     "Logging options": {
       "monochrome_logs": {

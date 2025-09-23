@@ -9,11 +9,10 @@
 ## Introduction
 
 **annotate_bakta** is an convenience wrapper around the community standard bacterial genome annotation software Bakta [generate_mags](https://github.com/oschwengers/bakta).  
-It allows running this software on large batches of genomes taking advantage of the convenient automation of a Nextflow pipeline to process all genomes in parallel 
-In addition this pipeline allows to combine previously generated annotation in GFF3 format with the Bakta anotation generated in this pipeline.  
+It allows running this software on large batches of genomes taking advantage of the convenient automation of a Nextflow pipeline to process all genomes in parallel
+In addition this pipeline allows to combine previously generated annotation in GFF3 format with the Bakta anotation generated in this pipeline.
 
 In the future, this pipeline may be further developed to include other annotation modules, which will all be combined into a final annotation file. please contact [pam-informatics@sanger.ac.uk](mailto:pam-informatics@sanger.ac.uk) if you're interested in such features.
-
 
 ## Pipeline summary
 
@@ -71,6 +70,7 @@ Currently, you can also run this pipeline on a dedicated host machine containing
 This pipeline has several input parameters that allow read data to be read from the local disk (on the SAnger HPC, this means on the NFS and Lustre filsytems)
 
 Please provide a CSV (comma-separated value) file with two columns and header names `ID` and`assembly` specifying the identifier and the path to the genome assembly file in Fasta sequence file format, e.g.:
+
 ```
 ID,assembly
 Ecoli_Strain1,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Ecoli_Strain1.fa
@@ -81,6 +81,7 @@ MAG2,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin2.fa
 ```
 
 In addition, previously generated annotation in GFF3 format may be combined with the Bakta anotation generated in this pipeline. These annotation files should be provided in the input manifest by adding a column with header `annotations`, e.g.:
+
 ```
 ID,assembly,annotations
 Ecoli_Strain1,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Ecoli_Strain1.fa,/data/pam/teamXXX/userYYY/scratch/projectZZZ/annotations/Ecoli_Strain1.gff
@@ -92,39 +93,43 @@ MAG2,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin2.fa,
 ## Usage
 
 ```
------------------------------------------------------------------
 
- Annotation Pipeline options
-      --manifest
-            default: 
-            Manifest containing paths to fasta genomic DNA sequence files with header containing at least the columns: ID,assembly. (mandatory)
+---
+
+Annotation Pipeline options
+--manifest
+default:
+Manifest containing paths to fasta genomic DNA sequence files with header containing at least the columns: ID,assembly. (mandatory)
 
       --combine_annotations
             default: false
             Previously generated annotation in GFF3 format are to be combined with the Bakta anotation generated in this pipeline. These annotation files should be provided in the input manifest by adding a column with header `annotations`.
 
------------------------------------------------------------------
+---
 
- Annotation
-      --bakta_args
-            default:
-            Supply bakta arguments as a string, e.g. '--proteins <full path>'. Avoid the use of --prefix, --locus-tag, --keep-contig-headers, for which values are supplied by the pipeline.
-      --bakta_db
-            default: /data/pam/software/bakta/v6.0/
-            Absolute path to the Bakta DB used for annotation.
-      --publish_gbff
-            default: false
-            Save gbff (GBK) files into a /gbff directory
-      --combine_annotations
-            default: false
-            EXPERIMENTAL: Combine annotations that you have produced seperately into the main bakta produced annotation
------------------------------------------------------------------
- Logging options
-      --monochrome_logs
-            default: false
-            Should logs appear in plain ASCII
+Annotation
+--bakta_args
+default:
+Supply bakta arguments as a string, e.g. '--proteins <full path>'. Avoid the use of --prefix, --locus-tag, --keep-contig-headers, for which values are supplied by the pipeline.
+--bakta_db
+default: /data/pam/software/bakta/v6.0/
+Absolute path to the Bakta DB used for annotation.
+--publish_gbff
+default: false
+Save gbff (GBK) files into a /gbff directory
+--combine_annotations
+default: false
+EXPERIMENTAL: Combine annotations that you have produced seperately into the main bakta produced annotation
 
------------------------------------------------------------------
+---
+
+Logging options
+--monochrome_logs
+default: false
+Should logs appear in plain ASCII
+
+---
+
 ```
 
 ## Output and intermediate file cleanup
@@ -134,7 +139,6 @@ By default, this pipeline will publish the results to a `results` folder, this c
 For instance, the output directory could look like:
 
 ```
-
 
 ```
 
@@ -149,3 +153,4 @@ This pipeline was originally designed as a reimplementation of metaWRAP (based o
 ## Support
 
 For further information or help, don't hesitate to get in touch via [pam-informatics@sanger.ac.uk](mailto:pam-informatics@sanger.ac.uk).
+```
