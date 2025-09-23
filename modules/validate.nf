@@ -57,7 +57,7 @@ def validate_parameters() {
     int errors = 0
     println "start parameter validation"
     errors += validate_path_param("--manifest", params.manifest)
-    errors += validate_choice_param("--combine_annotations", params.combine_annotations)
+    errors += validate_choice_param("--combine_annotations", params.combine_annotations, ["true","false"])
 
     if (errors > 0) {
         log.error(String.format("%d errors detected", errors))
