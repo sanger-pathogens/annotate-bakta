@@ -14,6 +14,8 @@ workflow MANIFEST_PARSE {
         .map { create_assembly_channels(it) }
         .set { assemblies }
 
+    def pre_generated_annotation_channel = Channel.empty()
+
     if (params.combine_annotations) {
         Channel
             .fromPath( samplesheet )
@@ -24,7 +26,7 @@ workflow MANIFEST_PARSE {
     }
     emit:
     assemblies
-    // pre_generated_annotation_channel for future
+    pre_generated_annotation_channel
 }
 
 // Function to get list of [ meta, assembly ]
