@@ -30,8 +30,8 @@ def printHelp() {
 // SUBWORKFLOWS
 //
 
-include { MANIFEST_PARSE   } from './subworkflows/manifest_parse.nf'
-include { ANNOTATE_BAKTA   } from './assorted-sub-workflows/annotate_bakta/subworkflows/annotate_bakta.nf'
+include { MANIFEST_PARSE      } from './subworkflows/manifest_parse.nf'
+include { ANNOTATE_BAKTA      } from './assorted-sub-workflows/annotate_bakta/subworkflows/annotate_bakta.nf'
 include { validate_parameters } from './modules/validate.nf'
 
 

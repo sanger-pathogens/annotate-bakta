@@ -7,23 +7,23 @@ workflow MANIFEST_PARSE {
     samplesheet // file: /path/to/samplesheet.csv
 
     main:
-    Channel
+    assemblies = Channel
         .fromPath( samplesheet )
         .ifEmpty {exit 1, "Cannot find path file ${samplesheet}"}
         .splitCsv ( header:true, sep:',' )
         .map { create_assembly_channels(it) }
-        .set { assemblies }
-
-    def pre_generated_annotation_channel = Channel.empty()
 
     if (params.combine_annotations) {
-        Channel
+        pre_generated_annotation_channel = Channel
             .fromPath( samplesheet )
             .ifEmpty {exit 1, "Cannot find path file ${samplesheet}"}
             .splitCsv ( header:true, sep:',' )
             .map { create_annotations_channels(it) }
-            .set { pre_generated_annotation_channel }
+
+    } else {
+        pre_generated_annotation_channel = Channel.empty()
     }
+    
     emit:
     assemblies
     pre_generated_annotation_channel
