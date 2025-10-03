@@ -60,6 +60,8 @@ def create_annotations_channels(LinkedHashMap row) {
     // check short reads
     if ( row.annotations ) {
         annotations = file(row.annotations)
+    } else {
+        exit 1, "ERROR: Please check input samplesheet -> 'annotations' field is required if 'combine_annotations' parameter is set to true."
     }
 
     array = [ meta, annotations ]
