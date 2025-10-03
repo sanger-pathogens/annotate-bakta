@@ -58,6 +58,8 @@ def create_annotations_channels(LinkedHashMap row) {
     // check short reads
     if ( row.annotations ) {
         annotations = file(row.annotations)
+    } else {
+        annotations = channel.empty()
     }
 
     array = [ meta, annotations ]
