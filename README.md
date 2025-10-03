@@ -79,7 +79,7 @@ MAG1,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin1.fa
 MAG2,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin2.fa
 ```
 
-In addition, previously generated annotation in GFF3 format may be combined with the Bakta anotation generated in this pipeline. If using this `--combine_annotations` option these annotation files must be provided in the input manifest by adding a column with header `annotations`, e.g.:
+In addition, previously generated annotations in GFF3 format may be combined with the Bakta annotations generated in this pipeline. If using this `--combine_annotations` option these annotation files must be provided in the input manifest by adding a column with header `annotations`, e.g.:
 
 ```
 ID,assembly,annotations
