@@ -7,24 +7,26 @@ workflow MANIFEST_PARSE {
     samplesheet // file: /path/to/samplesheet.csv
 
     main:
-    Channel
+    assemblies = Channel
         .fromPath( samplesheet )
         .ifEmpty {exit 1, "Cannot find path file ${samplesheet}"}
         .splitCsv ( header:true, sep:',' )
         .map { create_assembly_channels(it) }
-        .set { assemblies }
 
     if (params.combine_annotations) {
-        Channel
+        pre_generated_annotation_channel = Channel
             .fromPath( samplesheet )
             .ifEmpty {exit 1, "Cannot find path file ${samplesheet}"}
             .splitCsv ( header:true, sep:',' )
             .map { create_annotations_channels(it) }
-            .set { pre_generated_annotation_channel }
+
+    } else {
+        pre_generated_annotation_channel = Channel.empty()
     }
+    
     emit:
     assemblies
-    // pre_generated_annotation_channel for future
+    pre_generated_annotation_channel
 }
 
 // Function to get list of [ meta, assembly ]
@@ -58,6 +60,8 @@ def create_annotations_channels(LinkedHashMap row) {
     // check short reads
     if ( row.annotations ) {
         annotations = file(row.annotations)
+    } else {
+        exit 1, "ERROR: Please check input samplesheet -> 'annotations' field is required if 'combine_annotations' parameter is set to true."
     }
 
     array = [ meta, annotations ]

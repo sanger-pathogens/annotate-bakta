@@ -1,4 +1,4 @@
-# mags_maker
+# annotate-bakta
 
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A521.04.0-23aa62.svg?labelColor=000000)](https://www.nextflow.io/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
@@ -8,15 +8,14 @@
 
 ## Introduction
 
-**annotate_bakta** is an convenience wrapper around the community standard bacterial genome annotation software Bakta [generate_mags](https://github.com/oschwengers/bakta).  
-It allows running this software on large batches of genomes taking advantage of the convenient automation of a Nextflow pipeline to process all genomes in parallel
+**annotate-bakta** is a convenience wrapper around the community standard bacterial genome annotation software [Bakta](https://github.com/oschwengers/bakta). It allows running this software on large batches of genomes taking advantage of the convenient automation of a Nextflow pipeline to process all genomes in parallel.
 In addition this pipeline allows to combine previously generated annotation in GFF3 format with the Bakta anotation generated in this pipeline.
 
 In the future, this pipeline may be further developed to include other annotation modules, which will all be combined into a final annotation file. please contact [pam-informatics@sanger.ac.uk](mailto:pam-informatics@sanger.ac.uk) if you're interested in such features.
 
 ## Pipeline summary
 
-There is two stages in this pipeline: 1) Bakta annotation of genomes and, optionally, 2) combining previously pgenerated annotation with Bakta's.
+There is two stages in this pipeline: 1) Bakta annotation of genomes and, optionally, 2) combining previously generated annotation with Bakta's.
 
 ## Getting started
 
@@ -32,8 +31,8 @@ There is two stages in this pipeline: 1) Bakta annotation of genomes and, option
 
    - Clone this repository using `git clone --recurse-submodules`  
      OR
-   - Load the software via a module: `module load annotate_bakta`  
-     :warning: If using the module installed on the Sanger "farm" HPC, please replace `nextflow run main.nf` with `annotate_bakta` in all subsequent commands.
+   - Load the software via a module: `module load annotate-bakta`  
+     :warning: If using the module installed on the Sanger "farm" HPC, please replace `nextflow run main.nf` with `annotate-bakta` in all subsequent commands.
 
 3. Start the pipeline  
    For example inputs, please see [Generating a manifest](#generating-a-manifest).
@@ -67,9 +66,9 @@ Currently, you can also run this pipeline on a dedicated host machine containing
 
 ## Generating a manifest
 
-This pipeline has several input parameters that allow read data to be read from the local disk (on the SAnger HPC, this means on the NFS and Lustre filsytems)
+This pipeline has several input parameters that allow read data to be read from the local disk (on the Sanger HPC, this means on the NFS and Lustre fiesytems)
 
-Please provide a CSV (comma-separated value) file with two columns and header names `ID` and`assembly` specifying the identifier and the path to the genome assembly file in Fasta sequence file format, e.g.:
+Please provide a CSV (comma-separated value) file with mandatory columns `ID` and`assembly` specifying the identifier and the path to the genome assembly file in Fasta sequence file format, e.g.:
 
 ```
 ID,assembly
@@ -80,7 +79,7 @@ MAG1,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin1.fa
 MAG2,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin2.fa
 ```
 
-In addition, previously generated annotation in GFF3 format may be combined with the Bakta anotation generated in this pipeline. These annotation files should be provided in the input manifest by adding a column with header `annotations`, e.g.:
+In addition, previously generated annotations in GFF3 format may be combined with the Bakta annotations generated in this pipeline. If using this `--combine_annotations` option these annotation files must be provided in the input manifest by adding a column with header `annotations`, e.g.:
 
 ```
 ID,assembly,annotations
@@ -88,7 +87,8 @@ Ecoli_Strain1,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Ecoli_Stra
 Ecoli_Strain2,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Ecoli_Strain2.fa,/data/pam/teamXXX/userYYY/scratch/projectZZZ/annotations/Ecoli_Strain2.gff
 Vchol_Strain1,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Vchol_Strain1.fa,/data/pam/teamXXX/userYYY/scratch/projectZZZ/annotations/Vchol_Strain1.gff
 MAG1,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin1.fa,
-MAG2,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin2.fa,
+MAG2,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin2.fa
+```
 
 ## Usage
 
@@ -136,21 +136,16 @@ Should logs appear in plain ASCII
 
 By default, this pipeline will publish the results to a `results` folder, this can be changed using the `--outdir` argument.
 
+<!--- TODO: output directory example here
+
 For instance, the output directory could look like:
 
 ```
-
-```
-
-Output folders are described in the following table:
 | folder | description |
 | --------- | --------------------------------------------------------- |
-
-## Credits
-
-This pipeline was originally designed as a reimplementation of metaWRAP (based on version 1.3.2; https://github.com/bxlab/metaWRAP). For further information please refer to the MetaWRAP paper: [MetaWRAP - a flexible pipeline for genome-resolved metagenomic data analysis](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0541-1)
+```
+-->
 
 ## Support
 
 For further information or help, don't hesitate to get in touch via [pam-informatics@sanger.ac.uk](mailto:pam-informatics@sanger.ac.uk).
-```
