@@ -6,146 +6,160 @@
 
 [[_TOC_]]
 
-## Introduction
+## Pipeline overview
 
-**annotate-bakta** is a convenience wrapper around the community standard bacterial genome annotation software [Bakta](https://github.com/oschwengers/bakta). It allows running this software on large batches of genomes taking advantage of the convenient automation of a Nextflow pipeline to process all genomes in parallel.
-In addition this pipeline allows to combine previously generated annotation in GFF3 format with the Bakta anotation generated in this pipeline.
+**annotate-bakta** is a Nextflow DSL2 pipeline for annotating bacterial genomes at scale using [Bakta](https://github.com/oschwengers/bakta). It runs Bakta on all input assemblies in parallel and, optionally, merges the resulting annotations with pre-existing GFF3 annotation files.
 
-In the future, this pipeline may be further developed to include other annotation modules, which will all be combined into a final annotation file. please contact [pam-informatics@sanger.ac.uk](mailto:pam-informatics@sanger.ac.uk) if you're interested in such features.
+The pipeline performs the following steps:
 
-## Pipeline summary
+1. **Annotation** — Bakta annotates each input assembly FASTA, producing GFF3, GBK/GBFF, FAA (proteins), and other standard annotation outputs.
+2. **Annotation merging** (optional, `--combine_annotations`) — previously generated GFF3 annotations are merged with the Bakta output for each sample.
 
-There is two stages in this pipeline: 1) Bakta annotation of genomes and, optionally, 2) combining previously generated annotation with Bakta's.
+:warning: It is strongly recommended to run no more than 100 samples per pipeline invocation to reduce exposure to transient LSF and I/O errors.
 
-## Getting started
+## Usage
 
-### Running on the farm (Sanger HPC clusters)
+### Quickstart
 
-1. Load nextflow and singularity modules:
+#### From source code
 
-   ```bash
-   module load nextflow ISG/singularity
-   ```
-
-2. Either:
-
-   - Clone this repository using `git clone --recurse-submodules`  
-     OR
-   - Load the software via a module: `module load annotate-bakta`  
-     :warning: If using the module installed on the Sanger "farm" HPC, please replace `nextflow run main.nf` with `annotate-bakta` in all subsequent commands.
-
-3. Start the pipeline  
-   For example inputs, please see [Generating a manifest](#generating-a-manifest).
-
-   Example:
+1. Clone this repository (including submodules):
 
    ```bash
-   nextflow run main.nf --manifest ./test_data/inputs/test_manifest.csv --outdir my_output
+   git clone --recurse-submodules https://gitlab.internal.sanger.ac.uk/sanger-pathogens/pipelines/annotate-bakta.git
+   cd annotate-bakta
    ```
 
-   It is good practice to submit a dedicated job for the nextflow master process (use the `oversubscribed` queue):
+2. To run with `docker`, use the `-profile docker` option:
 
    ```bash
-   bsub -o output.o -e error.e -q oversubscribed -R "select[mem>4000] rusage[mem=4000]" -M4000 nextflow run main.nf --manifest ./test_data/inputs/test_manifest.csv --outdir my_output
+   nextflow run main.nf \
+       -profile docker \
+       --manifest manifest.csv \
+       --outdir my_output
    ```
 
-   See [usage](#usage) for all available pipeline options.
+   Other profiles are also supported (`singularity`).  
+   :warning: If no profile is specified the pipeline will run with the Sanger HPC-specific configuration.
 
-4. Once your run has finished, check output in the `outdir` and clean up any intermediate files. To do this (assuming no other pipelines are running from the current working directory) run:
+3. Once the run has finished, clean up intermediate files:
 
    ```bash
    rm -rf work .nextflow*
    ```
 
-> :warning:
-> It is strongly recommended that you don't run more than 100 samples at a time through this pipeline to reduce vulnerabilities to transient errors - e.g. LSF and I/O errors.
+#### Using on the Sanger farm
 
-### Other supported environments
+First load the latest pipeline module:
 
-Currently, you can also run this pipeline on a dedicated host machine containing docker (using `-profile docker`) or (`-profile singularity`). No other environments are natively supported at this time.
+```bash
+module load annotate-bakta
+```
 
-## Generating a manifest
+Then run on the command line. For instance, to see a help message:
 
-This pipeline has several input parameters that allow read data to be read from the local disk (on the Sanger HPC, this means on the NFS and Lustre fiesytems)
+```bash
+annotate-bakta --help
+```
 
-Please provide a CSV (comma-separated value) file with mandatory columns `ID` and`assembly` specifying the identifier and the path to the genome assembly file in Fasta sequence file format, e.g.:
+Submit to LSF:
+
+```bash
+bsub -o output.o -e error.e -q oversubscribed -R "select[mem>4000] rusage[mem=4000]" -M4000 \
+    annotate-bakta \
+        --manifest manifest.csv \
+        --outdir my_output
+```
+
+### Input
+
+#### Manifest (`--manifest`)
+
+A CSV file with at least the columns `ID` and `assembly`:
 
 ```
 ID,assembly
-Ecoli_Strain1,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Ecoli_Strain1.fa
-Ecoli_Strain2,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Ecoli_Strain2.fa
-Vchol_Strain1,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Vchol_Strain1.fa
-MAG1,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin1.fa
-MAG2,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin2.fa
+Ecoli_Strain1,/path/to/Ecoli_Strain1.fa
+MAG1,/path/to/MAG1.fa
 ```
 
-In addition, previously generated annotations in GFF3 format may be combined with the Bakta annotations generated in this pipeline. If using this `--combine_annotations` option these annotation files must be provided in the input manifest by adding a column with header `annotations`, e.g.:
+When using `--combine_annotations`, add an `annotations` column with paths to existing GFF3 files. Leave blank for samples without pre-existing annotations:
 
 ```
 ID,assembly,annotations
-Ecoli_Strain1,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Ecoli_Strain1.fa,/data/pam/teamXXX/userYYY/scratch/projectZZZ/annotations/Ecoli_Strain1.gff
-Ecoli_Strain2,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Ecoli_Strain2.fa,/data/pam/teamXXX/userYYY/scratch/projectZZZ/annotations/Ecoli_Strain2.gff
-Vchol_Strain1,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Vchol_Strain1.fa,/data/pam/teamXXX/userYYY/scratch/projectZZZ/annotations/Vchol_Strain1.gff
-MAG1,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin1.fa,
-MAG2,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin2.fa
+Ecoli_Strain1,/path/to/Ecoli_Strain1.fa,/path/to/Ecoli_Strain1.gff
+Ecoli_Strain2,/path/to/Ecoli_Strain2.fa,
 ```
 
-## Usage
+### Output
+
+Results are written to `--outdir` (default: `./results`):
 
 ```
+results/
+  <sample_ID>/
+    <sample_ID>.gff3                 # Bakta annotation in GFF3 format
+    <sample_ID>.gbff                 # GenBank flat file
+    <sample_ID>.faa                  # Predicted protein sequences
+    <sample_ID>.ffn                  # Nucleotide sequences of features
+    <sample_ID>.fna                  # Annotated genome sequence
+    <sample_ID>.tsv                  # Tabular annotation summary
+    <sample_ID>.json                 # Annotation in JSON format
+    ...                              # Other Bakta output files
+```
+
+### Parameters
+
+**Annotation pipeline options**
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `--manifest` | `path` | (required) | Input manifest CSV with header `ID,assembly` (and optionally `annotations`). |
+| `--combine_annotations` | `boolean` | `false` | Merge pre-existing GFF3 annotations (supplied in the manifest `annotations` column) with Bakta output. |
 
 ---
 
-Annotation Pipeline options
---manifest
-default:
-Manifest containing paths to fasta genomic DNA sequence files with header containing at least the columns: ID,assembly. (mandatory)
+**Annotation options**
 
-      --combine_annotations
-            default: false
-            Previously generated annotation in GFF3 format are to be combined with the Bakta anotation generated in this pipeline. These annotation files should be provided in the input manifest by adding a column with header `annotations`.
-
----
-
-Annotation
---bakta_args
-default:
-Supply bakta arguments as a string, e.g. '--proteins <full path>'. Avoid the use of --prefix, --locus-tag, --keep-contig-headers, for which values are supplied by the pipeline.
---bakta_db
-default: /data/pam/software/bakta/v6.0/
-Absolute path to the Bakta DB used for annotation.
---publish_gbff
-default: false
-Save gbff (GBK) files into a /gbff directory
---combine_annotations
-default: false
-EXPERIMENTAL: Combine annotations that you have produced seperately into the main bakta produced annotation
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `--bakta_db` | `path` | `/data/pam/software/bakta/v6.0/` | Path to the Bakta database directory. |
+| `--bakta_args` | `string` | `""` | Additional Bakta arguments as a string (e.g. `--proteins /path/to/proteins.faa`). Do not pass `--prefix`, `--locus-tag`, or `--keep-contig-headers` — these are set by the pipeline. |
+| `--publish_gbff` | `boolean` | `false` | Publish GBFF/GBK annotation files to the output directory. |
 
 ---
 
-Logging options
---monochrome_logs
-default: false
-Should logs appear in plain ASCII
+**Logging options**
 
----
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `--outdir` | `path` | `./results` | Directory where results are written. |
+| `--monochrome_logs` | `boolean` | `false` | Output logs in plain ASCII. |
 
-```
+### Dependencies
 
-## Output and intermediate file cleanup
+All software dependencies are containerised. The Bakta database must be available locally:
 
-By default, this pipeline will publish the results to a `results` folder, this can be changed using the `--outdir` argument.
+- **Bakta database** (`--bakta_db`): download with `bakta_db download --output <path> --type full`. On the Sanger HPC, the database is pre-configured at the default path.
 
-<!--- TODO: output directory example here
+## Software versions
 
-For instance, the output directory could look like:
+| Software | Version | Image |
+| --- | --- | --- |
+| Bakta | 1.12.0 | `quay.io/sangerpathogens/bakta:1.12.0` |
+| gffutils | 0.13 | `quay.io/sangerpathogens/gffutils:0.13` |
 
-```
-| folder | description |
-| --------- | --------------------------------------------------------- |
-```
--->
+See `assorted-sub-workflows/annotate_bakta/modules/` for pinned container versions.
 
-## Support
+## Troubleshooting
 
-For further information or help, don't hesitate to get in touch via [pam-informatics@sanger.ac.uk](mailto:pam-informatics@sanger.ac.uk).
+- **Bakta database not found**: ensure `--bakta_db` points to a valid Bakta database directory. Download it with `bakta_db download --type full`.
+- **Memory errors**: Bakta is memory-intensive for large assemblies. Increase memory via a custom Nextflow configuration file.
+- **Resuming a failed run**: add `-resume` to restart from cached intermediate results.
+- For further help, check `.nextflow.log` and the per-process logs in the `work/` directory.
+
+## Issues and Contributions
+
+If you find an issue with this pipeline, or would like to suggest an improvement, please log an issue or open a pull request on this repository.
+
+If you are at Sanger and need internal support, you can raise an issue on the PAM Freshservice portal: https://sanger.freshservice.com/support/catalog/items/426
