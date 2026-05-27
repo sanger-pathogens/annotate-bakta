@@ -112,29 +112,29 @@ results/
 
 **Annotation pipeline options**
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `--manifest` | `path` | (required) | Input manifest CSV with header `ID,assembly` (and optionally `annotations`). |
-| `--combine_annotations` | `boolean` | `false` | Merge pre-existing GFF3 annotations (supplied in the manifest `annotations` column) with Bakta output. |
+| Option                  | Type      | Default    | Description                                                                                            |
+| ----------------------- | --------- | ---------- | ------------------------------------------------------------------------------------------------------ |
+| `--manifest`            | `path`    | (required) | Input manifest CSV with header `ID,assembly` (and optionally `annotations`).                           |
+| `--combine_annotations` | `boolean` | `false`    | Merge pre-existing GFF3 annotations (supplied in the manifest `annotations` column) with Bakta output. |
 
 ---
 
 **Annotation options**
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `--bakta_db` | `path` | `/data/pam/software/bakta/v6.0/` | Path to the Bakta database directory. |
-| `--bakta_args` | `string` | `""` | Additional Bakta arguments as a string (e.g. `--proteins /path/to/proteins.faa`). Do not pass `--prefix`, `--locus-tag`, or `--keep-contig-headers` — these are set by the pipeline. |
-| `--publish_gbff` | `boolean` | `false` | Publish GBFF/GBK annotation files to the output directory. |
+| Option           | Type      | Default                          | Description                                                                                                                                                                          |
+| ---------------- | --------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--bakta_db`     | `path`    | `/data/pam/software/bakta/v6.0/` | Path to the Bakta database directory.                                                                                                                                                |
+| `--bakta_args`   | `string`  | `""`                             | Additional Bakta arguments as a string (e.g. `--proteins /path/to/proteins.faa`). Do not pass `--prefix`, `--locus-tag`, or `--keep-contig-headers` — these are set by the pipeline. |
+| `--publish_gbff` | `boolean` | `false`                          | Publish GBFF/GBK annotation files to the output directory.                                                                                                                           |
 
 ---
 
 **Logging options**
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `--outdir` | `path` | `./results` | Directory where results are written. |
-| `--monochrome_logs` | `boolean` | `false` | Output logs in plain ASCII. |
+| Option              | Type      | Default     | Description                          |
+| ------------------- | --------- | ----------- | ------------------------------------ |
+| `--outdir`          | `path`    | `./results` | Directory where results are written. |
+| `--monochrome_logs` | `boolean` | `false`     | Output logs in plain ASCII.          |
 
 ### Dependencies
 
@@ -144,10 +144,10 @@ All software dependencies are containerised. The Bakta database must be availabl
 
 ## Software versions
 
-| Software | Version | Image |
-| --- | --- | --- |
-| Bakta | 1.12.0 | `quay.io/sangerpathogens/bakta:1.12.0` |
-| gffutils | 0.13 | `quay.io/sangerpathogens/gffutils:0.13` |
+| Software | Version | Image                                   |
+| -------- | ------- | --------------------------------------- |
+| Bakta    | 1.12.0  | `quay.io/sangerpathogens/bakta:1.12.0`  |
+| gffutils | 0.13    | `quay.io/sangerpathogens/gffutils:0.13` |
 
 See `assorted-sub-workflows/annotate_bakta/modules/` for pinned container versions.
 
