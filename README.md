@@ -156,7 +156,9 @@ See `assorted-sub-workflows/annotate_bakta/modules/` for pinned container versio
 - **Bakta database not found**: ensure `--bakta_db` points to a valid Bakta database directory. Download it with `bakta_db download --type full`.
 - **Memory errors**: Bakta is memory-intensive for large assemblies. Increase memory via a custom Nextflow configuration file.
 - **Resuming a failed run**: add `-resume` to restart from cached intermediate results.
-- For further help, check `.nextflow.log` and the per-process logs in the `work/` directory.
+- For further help, check `.nextflow.log` and the per-process `.command.log` logs in the `work/` directory.
+
+Sanger users may find [this page](https://ssg-confluence.internal.sanger.ac.uk/spaces/PaMI/pages/181078206/General+pipeline+info#Generalpipelineinfo-Troubleshootingafailedpipelinerunandsendingabugreport) useful for troubleshooting Nextflow pipeline runs.
 
 ## Issues and Contributions
 
