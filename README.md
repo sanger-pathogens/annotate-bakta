@@ -97,15 +97,12 @@ Results are written to `--outdir` (default: `./results`):
 
 ```
 results/
-  <sample_ID>/
-    <sample_ID>.gff3                 # Bakta annotation in GFF3 format
-    <sample_ID>.gbff                 # GenBank flat file
-    <sample_ID>.faa                  # Predicted protein sequences
-    <sample_ID>.ffn                  # Nucleotide sequences of features
-    <sample_ID>.fna                  # Annotated genome sequence
-    <sample_ID>.tsv                  # Tabular annotation summary
-    <sample_ID>.json                 # Annotation in JSON format
-    ...                              # Other Bakta output files
+  gffs/
+    <sample_ID>.gff3                  # Bakta annotation in GFF3 format
+  gbff/
+    <sample_ID>.gbff                  # GenBank flat file (if --publish_gbff)
+  combined_gffs/
+    <sample_ID>_merged_annotation.gff3  # Merged GFF3 annotation (if --combine_annotations)
 ```
 
 ### Parameters
