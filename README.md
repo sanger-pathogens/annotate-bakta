@@ -37,8 +37,7 @@ In the future, this pipeline may be further developed to include other annotatio
    ```bash
    nextflow run main.nf \
        -profile docker \
-       --manifest manifest.csv \
-       --outdir my_output
+       --manifest manifest.csv
    ```
 
    Other profiles are also supported (`singularity`).  
