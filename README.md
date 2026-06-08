@@ -83,16 +83,23 @@ A CSV file with at least the columns `ID` and `assembly`:
 
 ```
 ID,assembly
-Ecoli_Strain1,/path/to/Ecoli_Strain1.fa
-MAG1,/path/to/MAG1.fa
+Ecoli_Strain1,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Ecoli_Strain1.fa
+Ecoli_Strain2,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Ecoli_Strain2.fa
+Vchol_Strain1,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Vchol_Strain1.fa
+MAG1,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin1.fa
+MAG2,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin2.fa
+
 ```
 
 When using `--combine_annotations`, add an `annotations` column with paths to existing GFF3 files. Leave blank for samples without pre-existing annotations:
 
 ```
 ID,assembly,annotations
-Ecoli_Strain1,/path/to/Ecoli_Strain1.fa,/path/to/Ecoli_Strain1.gff
-Ecoli_Strain2,/path/to/Ecoli_Strain2.fa,
+Ecoli_Strain1,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Ecoli_Strain1.fa,/data/pam/teamXXX/userYYY/scratch/projectZZZ/annotations/Ecoli_Strain1.gff
+Ecoli_Strain2,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Ecoli_Strain2.fa,/data/pam/teamXXX/userYYY/scratch/projectZZZ/annotations/Ecoli_Strain2.gff
+Vchol_Strain1,/data/pam/teamXXX/userYYY/scratch/projectZZZ/assemblies/Vchol_Strain1.fa,/data/pam/teamXXX/userYYY/scratch/projectZZZ/annotations/Vchol_Strain1.gff
+MAG1,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin1.fa,
+MAG2,/data/pam/teamXXX/userYYY/scratch/projectAAA/MAGs/AAA_bin2.fa,
 ```
 
 ### Output
