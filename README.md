@@ -160,7 +160,7 @@ See `assorted-sub-workflows/annotate_bakta/modules/` for pinned container versio
 
 ## Troubleshooting
 
-- **Bakta database not found**: ensure `--bakta_db` points to a valid Bakta database directory. Download it with `bakta_db download --type full`.
+- **Bakta database not found**: ensure `--bakta_db` points to a valid Bakta database directory.
 - **Memory errors**: Bakta is memory-intensive for large assemblies. Increase memory via a custom Nextflow configuration file.
 - **Resuming a failed run**: add `-resume` to restart from cached intermediate results.
 - For further help, check `.nextflow.log` and the per-process `.command.log` logs in the `work/` directory.
