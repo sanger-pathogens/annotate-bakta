@@ -117,12 +117,13 @@ results/
 
 ### Parameters
 
-**Annotation pipeline options**
+**Input/Output options**
 
-| Option                  | Type      | Default    | Description                                                                                            |
-| ----------------------- | --------- | ---------- | ------------------------------------------------------------------------------------------------------ |
-| `--manifest`            | `path`    | (required) | Input manifest CSV with header `ID,assembly` (and optionally `annotations`).                           |
-| `--combine_annotations` | `boolean` | `false`    | Merge pre-existing GFF3 annotations (supplied in the manifest `annotations` column) with Bakta output. |
+| Option                  | Type      | Default     | Description                                                                                            |
+| ----------------------- | --------- | ----------- | ------------------------------------------------------------------------------------------------------ |
+| `--manifest`            | `path`    | (required)  | Input manifest CSV with header `ID,assembly` (and optionally `annotations`).                           |
+| `--combine_annotations` | `boolean` | `false`     | Merge pre-existing GFF3 annotations (supplied in the manifest `annotations` column) with Bakta output. |
+| `--outdir`              | `path`    | `./results` | Directory where results are written.                                                                   |
 
 ---
 
@@ -138,10 +139,9 @@ results/
 
 **Logging options**
 
-| Option              | Type      | Default     | Description                          |
-| ------------------- | --------- | ----------- | ------------------------------------ |
-| `--outdir`          | `path`    | `./results` | Directory where results are written. |
-| `--monochrome_logs` | `boolean` | `false`     | Output logs in plain ASCII.          |
+| Option              | Type      | Default | Description                 |
+| ------------------- | --------- | ------- | --------------------------- |
+| `--monochrome_logs` | `boolean` | `false` | Output logs in plain ASCII. |
 
 ### Dependencies
 
