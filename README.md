@@ -15,6 +15,8 @@ The pipeline performs the following steps:
 1. **Annotation** — Bakta annotates each input assembly FASTA, producing GFF3, GBK/GBFF, FAA (proteins), and other standard annotation outputs.
 2. **Annotation merging** (optional, `--combine_annotations`) — previously generated GFF3 annotations are merged with the Bakta output for each sample.
 
+In the future, this pipeline may be further developed to include other annotation modules, which will all be combined into a final annotation file. Please let us know if this is of interest to you.
+
 :warning: It is strongly recommended to run no more than 100 samples per pipeline invocation to reduce exposure to transient LSF and I/O errors.
 
 ## Usage
